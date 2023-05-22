@@ -19,61 +19,56 @@ namespace Vaago.Controllers.Admin
             return View("~/Views/Admin/Menu.cshtml", menuList);
             //}
         }
-    
+
 
         // GET: Add Item
         public ActionResult AddItemView()
         {
             return View("~/Views/Admin/Menu_Insert.cshtml");
         }
-        
+       // itemImgpath
         [HttpPost]
         public ActionResult Add(Menu item)
         {
-            if (item.itemName != null) {
-                string filename = Path.GetFileNameWithoutExtension(item.imgFile.FileName);
-                string extension = Path.GetExtension(item.imgFile.FileName);
-                HttpPostedFileBase postedFile = item.imgFile;
-
-                int length = postedFile.ContentLength;
-
-                if (extension.ToLower() == ".jpg" || extension.ToLower() == ".png" || extension.ToLower() == ".jpeg")
+            if (item != null && item.itemName != null)
+            {
+                if (item.imgFile != null && item.imgFile.ContentLength > 0)
                 {
-                    if (length <= 1000000)
+                    string filename = Path.GetFileNameWithoutExtension(item.imgFile.FileName);
+                    string extension = Path.GetExtension(item.imgFile.FileName);
+
+                    if (extension.ToLower() == ".jpg" || extension.ToLower() == ".png" || extension.ToLower() == ".jpeg")
                     {
-                        filename = filename + extension;
-                        item.itemImgpath = "/images/" + filename;
-                        filename = Path.Combine(Server.MapPath("/images/"), filename);
-                        item.imgFile.SaveAs(filename);
-                        DB.Menus.Add(item);
-
-                        int a = DB.SaveChanges();
-                        if (a > 0)
+                        if (item.imgFile.ContentLength <= 1000000)
                         {
-                            ViewBag.Message = "<script>alert('Record Inserted!!')</script>";
-                            ModelState.Clear();
+                            filename = filename + extension;
+                            item.itemImgpath = "/images/" + filename;
+                            filename = Path.Combine(Server.MapPath("~/images/"), filename);
+                            item.imgFile.SaveAs(filename);
 
+                            DB.Menus.Add(item);
+                            int a = DB.SaveChanges();
+
+                            if (a > 0)
+                            {
+                                ViewBag.Message = "<script>alert('Record Inserted!!')</script>";
+                                ModelState.Clear();
+                            }
+                            else
+                            {
+                                ViewBag.Message = "<script>alert('Record Not Inserted!!')</script>";
+                            }
                         }
                         else
                         {
-                            ViewBag.Message = "<script>alert('Record Not Inserted!!')</script>";
-
+                            ViewBag.SizeMessage = "<script>alert('Size not supported!!')</script>";
                         }
-
                     }
                     else
                     {
-                        ViewBag.SizeMessage = "<script>alert('Size not supported!!')</script>";
+                        ViewBag.ExtensionMessage = "<script>alert('Extension not supported!!')</script>";
                     }
-
                 }
-                else
-                {
-                    ViewBag.ExtensionMessage = "<script>alert('Extension not supported!!')</script>";
-
-                }
-                return RedirectToAction("AddItemView");
-
             }
 
             return RedirectToAction("AddItemView");

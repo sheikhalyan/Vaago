@@ -26,6 +26,7 @@ namespace Vaago.Controllers.Admin
         {
             return View("~/Views/Admin/Menu_Insert.cshtml");
         }
+        
         [HttpPost]
         public ActionResult Add(Menu item)
         {

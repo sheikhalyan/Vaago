@@ -122,6 +122,7 @@
     <Compile Include="Controllers\Admin\AdminController.cs" />
     <Compile Include="Controllers\Admin\AdminCustomersController.cs" />
     <Compile Include="Controllers\Admin\AdminOrdersController.cs" />
+    <Compile Include="Controllers\Admin\AdminReservationController.cs" />
     <Compile Include="Controllers\Admin\DashboardController.cs" />
     <Compile Include="Controllers\Admin\AdminMenuController.cs" />
     <Compile Include="Controllers\Admin\SettingController.cs" />
@@ -450,6 +451,7 @@
     <Content Include="Views\Admin\Settings.cshtml" />
     <Content Include="Views\UOrderHistory\ViewItem.cshtml" />
     <Content Include="Views\Admin\ViewOrder.cshtml" />
+    <Content Include="Views\AdminReservation\AdminReservation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

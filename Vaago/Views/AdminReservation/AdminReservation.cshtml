@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section>
+    <div>
+        <span class="page-title">Reservations</span>
+        <hr />
+    </div>
+    <div class="maincard-cont">
+        <div style="text-align: start; width: 95%">
+            <button class="btn btn-danger" onclick="location.href='@Url.Action("Delete","AdminMenu") '">Delete Reservation</button>
+        </div>
+        <hr class="thin-hr" />
+        <div class="table-div">
+            <table class="table table-striped  admintable">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th><input type="checkbox" /></th>
+                        <th>reserveID</th>
+                        <th>Reservation_Number </th>
+                        <th>byName</th>
+                        <th>byEmail</th>
+                        <th>byContact</th>
+                        <th>reserveDateTime</th>
+                        <th>eventType</th>
+                        <th>byMessage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        if (Model == null)
+                        {
+                            <tr></tr>
+                        }
+                        else
+                        {
+                            foreach (var item in Model)
+                            {
+                                    <tr>
+                                        <th><input type="checkbox" /></th>
+                                        <td>@item.reserveID</td>
+                                        <td>@item.Reservation_Number</td>
+                                        <td>@item.byName</td>
+                                        <td>@item.byEmail</td>
+                                        <td>@item.byContact</td>
+                                        <td>@item.reserveDateTime</td>
+                                        <td>@item.eventType</td>
+                                        <td>@item.byMessage</td>
+                                        <td>Customer</td>
+                                    </tr>
+                            };
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</section>
+
+
+@*      public int reserveID { get; set; }
+        public string Reservation_Number { get; set; }
+        public string byName { get; set; }
+        public string byEmail { get; set; }
+        public string byContact { get; set; }
+        public Nullable<int>
+        numberOfPersons { get; set; }
+        public string reserveDateTime { get; set; }
+        public string eventType { get; set; }
+        public string byMessage { get; set; }*@

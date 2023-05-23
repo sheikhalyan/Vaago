@@ -11,8 +11,8 @@
     </div>
     <div class="maincard-cont">
         <div style="justify-content: flex-end; text-align: end; width: 98%">
-            <button class="btn btn-success" onclick="location.href='@Url.Action("AddItemView","AdminMenu") '">Add Item</button>
-            <button class="btn btn-danger" onclick="location.href='@Url.Action("DeleteItem","AdminMenu") '">Delete Item</button>
+            <button class="btn btn-success" onclick="location.href='@Url.Action("AddItemView","AdminMenu")'">Add Item</button>
+            <button class="btn btn-danger" onclick="location.href='@Url.Action("Index","AdminMenu")'">Delete Item</button>
         </div>
         <hr class="thin-hr" />
         <div class="table-div">
@@ -20,39 +20,94 @@
                 <thead class="bg-dark text-white">
                     <tr>
                         <th>ITEM ID</th>
-                        <th>SKU</th>
                         <th>NAME</th>
                         <th style="width: 25%;">DESCRIPTION</th>
                         <th>CATEGORY</th>
                         <th>PRICE</th>
+                        <th>SKU</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @{
-                        if (Model == null)
+                    @if (Model != null)
+                    {
+                        foreach (var item in Model)
                         {
-                            <tr></tr>
-                        }
-                        else
-                        {
-                            foreach (var item in Model)
-                            {
                             <tr>
                                 <td>@item.itemID</td>
-                                <td>@item.itemSKU</td>
                                 <td>@item.itemName</td>
                                 <td>@item.itemDesc</td>
                                 <td>@item.itemCategory</td>
                                 <td>RS.@item.itemPrice</td>
+                                <td>@item.itemSKU</td>
+                                <td style="vertical-align: bottom;">
+                                    <label class="checkbox-container">
+                                        @Html.CheckBoxFor(x => item.IsSelectedForDeletion, new { @class = "delete-checkbox" })
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
                             </tr>
-                            };
                         }
                     }
-
-
                 </tbody>
             </table>
         </div>
-
     </div>
 </section>
+
+<style>
+    .checkbox-container {
+        display: block;
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 18px;
+        user-select: none;
+    }
+
+    .checkbox-container input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+        height: 0;
+        width: 0;
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 18px;
+        width: 18px;
+        background-color: #eee;
+    }
+
+    .checkbox-container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    .checkbox-container input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
+
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    .checkbox-container input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    .checkbox-container .checkmark:after {
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+    </style>

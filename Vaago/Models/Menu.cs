@@ -28,10 +28,10 @@ namespace Vaago.Models
         public string itemCategory { get; set; }
         public string itemPrice { get; set; }
         public string itemSKU { get; set; }
+
         public HttpPostedFileBase imgFile { get; set; }
+        public bool IsSelectedForDeletion { get; set; }
 
-
-        
 
         public virtual ICollection<Order_Details> Order_Details { get; set; }
         public virtual ICollection<Cart> Carts { get; set; }

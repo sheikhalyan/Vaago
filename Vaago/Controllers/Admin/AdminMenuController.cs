@@ -10,27 +10,25 @@ namespace Vaago.Controllers.Admin
 {
     public class AdminMenuController : Controller
     {
-        VaagoProjectEntities DB = new VaagoProjectEntities();
+        private VaagoProjectEntities DB = new VaagoProjectEntities();
 
         // GET: Menu
         public ActionResult Index()
         {
             List<Menu> menuList = DB.Menus.ToList();
             return View("~/Views/Admin/Menu.cshtml", menuList);
-            //}
         }
-
 
         // GET: Add Item
         public ActionResult AddItemView()
         {
             return View("~/Views/Admin/Menu_Insert.cshtml");
         }
-       // itemImgpath
+
         [HttpPost]
         public ActionResult Add(Menu item)
         {
-            if (item != null && item.itemName != null)
+            if (item != null && !string.IsNullOrEmpty(item.itemName))
             {
                 if (item.imgFile != null && item.imgFile.ContentLength > 0)
                 {
@@ -73,5 +71,42 @@ namespace Vaago.Controllers.Admin
 
             return RedirectToAction("AddItemView");
         }
+
+        [HttpPost]
+        public ActionResult DeleteSelected(List<int> items)
+        {
+            if (items != null && items.Count() > 0)
+            {
+                try
+                {
+                    var itemsToDelete = DB.Menus.Where(x => items.Contains(x.itemID)).ToList();
+
+                    foreach (var item in itemsToDelete)
+                    {
+                        if (!string.IsNullOrEmpty(item.itemImgpath) && System.IO.File.Exists(Server.MapPath(item.itemImgpath)))
+                        {
+                            System.IO.File.Delete(Server.MapPath(item.itemImgpath));
+                        }
+                        DB.Menus.Remove(item);
+                    }
+                    DB.SaveChanges();
+
+                    return Json(new { success = true });
+                }
+                catch (Exception ex)
+                {
+                    return Json(new { success = false, message = "An error occurred while deleting menu items." });
+                }
+            }
+            return RedirectToAction("Index");
+
+            /*return Json(new { success = false, message = "No menu items selected for deletion." });*/
+
+        }
+
     }
 }
+
+
+
+

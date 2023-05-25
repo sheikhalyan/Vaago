@@ -19,8 +19,6 @@ namespace Vaago.Controllers.Admin
             //}
         }
 
-
-
         public ActionResult ViewOrder(int orderID)
         {
             var orderHistory = from ol in DB.Orders
@@ -50,8 +48,56 @@ namespace Vaago.Controllers.Admin
                 DB.SaveChanges();
             }
 
-            return RedirectToAction("Index", "AdminOrder");
+            return RedirectToAction("Index", "AdminOrders");
         }
+        /*[HttpPost]
+        public ActionResult DeleteOrder(int[] orderID)
+        {
+            try
+            {
+                foreach (var id in orderID)
+                {
+                    var order = DB.Orders.FirstOrDefault(o => o.orderID == id);
+                    if (order != null)
+                    {
+                        DB.Orders.Remove(order);
+                    }
+                }
+
+                DB.SaveChanges();
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting menu items." });
+            }
+        }*/
+        [HttpPost]
+        public ActionResult DeleteCustomer(int[] customerID)
+        {
+            try
+            {
+                var customers = DB.Accounts.Where(c => customerID.Contains(c.account_ID) && c.account_type == 2).ToList();
+
+                if (customers.Count > 0)
+                {
+                    // Delete the customers
+                    DB.Accounts.RemoveRange(customers);
+                    DB.SaveChanges();
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Customers not found." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting the customers." });
+            }
+        }
+
+
 
     }
 }

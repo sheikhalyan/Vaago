@@ -17,5 +17,31 @@ namespace Vaago.Controllers.Admin
             return View("~/Views/Admin/AdminCustomers.cshtml", customersList);
             //}
         }
+        [HttpPost]
+        public ActionResult DeleteCustomer(int[] customerID)
+        {
+            try
+            {
+                var customers = DB.Accounts.Where(c => customerID.Contains(c.account_ID) && c.account_type == 2).ToList();
+
+                if (customers.Count > 0)
+                {
+                    // Delete the customers
+                    DB.Accounts.RemoveRange(customers);
+                    DB.SaveChanges();
+                    return Json(new { success = true });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Customers not found." });
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting the customers." });
+            }
+        }
+
+
     }
 }

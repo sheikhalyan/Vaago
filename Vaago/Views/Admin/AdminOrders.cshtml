@@ -9,7 +9,7 @@
 }@{
     ViewBag.Title = "AdminOrders";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
-    var previousCust = 654;
+    //var previousCust = 654;
 
 
 }
@@ -21,7 +21,7 @@
     </div>
     <div class="maincard-cont">
         <div style="justify-content: flex-end; text-align: start; width: 98%">
-            <button class="btn btn-danger" onclick="location.href='@Url.Action("DeleteItem","AdminMenu") '">Delete Item</button>
+            <button class="btn btn-danger delete-button">Delete Order</button>
         </div>
         <hr class="thin-hr" />
         <div class="table-div">
@@ -53,7 +53,12 @@
                             {
 
                                 <tr>
-                                    <td><input type="checkbox" /></td>
+                                    <td style="vertical-align: bottom;">
+                                        <label class="checkbox-container">
+                                            @Html.CheckBoxFor(x => item.IsSelectedForDeletion, new { @class = "delete-checkbox" })
+                                            <span class="checkmark"></span>
+                                        </label>
+                                    </td>
                                     <td> @item.orderID</td>
                                     <td> @item.Account.name</td>
                                     <td> @item.orderDate</td>
@@ -73,5 +78,123 @@
         </div>
     </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   $(document).ready(function () {
+    // AJAX DELETE REQUEST
+       $(".delete-button").click(function () {
+        var itemsToDelete = [];
+
+        // Iterate over the checked checkboxes and collect the item IDs
+        $(".delete-checkbox:checked").each(function () {
+            var itemID = $(this).closest("tr").find("td:eq(1)").text();
+            console.log("itemID: " + itemID); // Debugging statement
+            itemsToDelete.push(parseInt(itemID));
+            /*itemsToDelete.push(parseInt(itemID, 10));*/
+        });
+
+        console.log("itemsToDelete: ", itemsToDelete); // Debugging statement
+
+        if (itemsToDelete.length > 0) {
+            // Send the AJAX request to delete the selected items
+            $.ajax
+                ({
+                url: '@Url.Action("DeleteOrder", "AdminOrders")',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ orderID: itemsToDelete }),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.success) {
+                        // Handle success, such as displaying a success message or refreshing the data grid
+                        alert("Items deleted successfully.");
+                        location.reload();
+                        // Refresh the data grid view or perform any other necessary actions
+                    } else {
+                        // Handle error, such as displaying an error message
+                        alert("An error occurred while deleting items.");
+                    }
+                },
+                error: function () {
+                    // Handle error, such as displaying an error message
+                    alert("An error occurred while deleting itemssss.");
+                },
+                complete: function () {
+                    console.log(itemsToDelete);
+                }
+            });
+        } else {
+            alert("Please select items to delete.");
+        }
+    });
+});
+
+</script>
+
+
+<style>
+    .table-div {
+        overflow: hidden;
+        width: 100%;
+        margin-left: -10px;
+        padding-right: 30px;
+    }
+
+    .checkbox-container {
+        display: block;
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 18px;
+        user-select: none;
+    }
+
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
+
+    .checkmark {
+        position: absolute;
+        top: -10px;
+        left: 10px;
+        height: 18px;
+        width: 18px;
+        background-color: #eee;
+    }
+
+    .checkbox-container:hover input ~ .checkmark {
+        background-color: #ccc;
+    }
+
+    .checkbox-container input:checked ~ .checkmark {
+        background-color: #2196F3;
+    }
+
+    .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+    }
+
+    .checkbox-container input:checked ~ .checkmark:after {
+        display: block;
+    }
+
+    .checkbox-container .checkmark:after {
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+    }
+</style>
 
 

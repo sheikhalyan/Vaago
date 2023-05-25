@@ -11,6 +11,7 @@ namespace Vaago.Models
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Web;
 
     public partial class Menu
@@ -30,6 +31,7 @@ namespace Vaago.Models
         public string itemSKU { get; set; }
 
         public HttpPostedFileBase imgFile { get; set; }
+        
         public bool IsSelectedForDeletion { get; set; }
 
 

@@ -75,6 +75,39 @@ function updateProfile() {
 }
 
 
+//// AJAX DELETE REQUEST
+//$(".delete-checkbox").change(function () {
+//    var itemsToDelete = [];
+
+//    // Iterate over the checked checkboxes and collect the item IDs
+//    $(".delete-checkbox:checked").each(function () {
+//        var itemID = $(this).closest("tr").find("td:first-child").text();
+//        itemsToDelete.push(parseInt(itemID));
+//    });
+
+//    // Send the AJAX request to delete the selected items
+//    $.ajax({
+//        url: '@Url.Action("DeleteSelected", "AdminMenu")',
+//        type: 'POST',
+//        dataType: 'json',
+//        data: JSON.stringify({ items: itemsToDelete }),
+//        contentType: 'application/json',
+//        success: function (response) {
+//            if (response.success) {
+//                // Handle success, such as displaying a success message or refreshing the data grid
+//                alert("Items deleted successfully.");
+//                // Refresh the data grid view or perform any other necessary actions
+//            } else {
+//                // Handle error, such as displaying an error message
+//                alert("An error occurred while deleting items.");
+//            }
+//        },
+//        error: function () {
+//            // Handle error, such as displaying an error message
+//            alert("An error occurred while deleting items.");
+//        }
+//    });
+//});
 
 
 $("#updateStatusBtn").click(function () {

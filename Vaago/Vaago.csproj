@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="images\" />
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
   <ItemGroup>
@@ -302,12 +303,6 @@
     <Content Include="Content\style.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="images\1.png" />
-    <Content Include="images\alfredo.jpg" />
-    <Content Include="images\chilliDry.jpg" />
-    <Content Include="images\kashmiri.jpg" />
-    <Content Include="images\reshmi.jpg" />
-    <Content Include="images\tikka.jpg" />
     <Content Include="Models\DBModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DBModel.edmx</DependentUpon>

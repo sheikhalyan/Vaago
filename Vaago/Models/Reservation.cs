@@ -23,5 +23,8 @@ namespace Vaago.Models
         public string reserveDateTime { get; set; }
         public string eventType { get; set; }
         public string byMessage { get; set; }
+
+        public bool IsSelectedForDeletion { get; set; }
+
     }
 }

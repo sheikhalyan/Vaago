@@ -12,8 +12,14 @@
     <div class="maincard-cont">
         <div style="justify-content: flex-end; text-align: end; width: 98%">
             <button class="btn btn-success" onclick="location.href='@Url.Action("AddItemView","AdminMenu")'">Add Item</button>
-            <button class="btn btn-danger" onclick="location.href='@Url.Action("Index","AdminMenu")'">Delete Item</button>
+            <button class="btn btn-danger delete-button">Delete Item</button>
+            @*<button class="btn btn-danger" onclick="location.href='@Url.Action("DeleteSelected","AdminMenu")'">Delete Item</button>*@
+            @*<form method="post" action="@Url.Action("DeleteSelected", "AdminMenu")" enctype="multipart/form-data">
+
+            <button type="button" class="btn btn-danger" onclick="location.href='@Url.Action("Index", "AdminMenu")'">Delete!</button>
+        </form>*@
         </div>
+
         <hr class="thin-hr" />
         <div class="table-div">
             <table class="table table-striped  admintable">
@@ -55,6 +61,57 @@
     </div>
 </section>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+   $(document).ready(function () {
+    // AJAX DELETE REQUEST
+    $(".delete-button").click(function () {
+        var itemsToDelete = [];
+
+        // Iterate over the checked checkboxes and collect the item IDs
+        $(".delete-checkbox:checked").each(function () {
+            var itemID = $(this).closest("tr").find("td:first-child").text();
+            itemsToDelete.push(parseInt(itemID));
+        });
+
+        if (itemsToDelete.length > 0) {
+            // Send the AJAX request to delete the selected items
+            $.ajax({
+                url: '@Url.Action("DeleteSelected", "AdminMenu")',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify({ items: itemsToDelete }),
+                contentType: 'application/json',
+                success: function (response) {
+                    if (response.success) {
+                        // Handle success, such as displaying a success message or refreshing the data grid
+                        alert("Items deleted successfully.");
+                        location.reload(); 
+                        // Refresh the data grid view or perform any other necessary actions
+                    } else {
+                        // Handle error, such as displaying an error message
+                        alert("An error occurred while deleting itemsss.");
+                    }
+                },
+                error: function () {
+                    // Handle error, such as displaying an error message
+                    alert("An error occurred while deleting items.");
+                },
+                complete: function () {
+                    console.log(itemsToDelete);
+                }
+            });
+        } else {
+            alert("Please select items to delete.");
+        }
+    });
+});
+
+</script>
+
+
+
 <style>
     .checkbox-container {
         display: block;
@@ -66,18 +123,18 @@
         user-select: none;
     }
 
-    .checkbox-container input {
-        position: absolute;
-        opacity: 0;
-        cursor: pointer;
-        height: 0;
-        width: 0;
-    }
+        .checkbox-container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+            height: 0;
+            width: 0;
+        }
 
     .checkmark {
         position: absolute;
-        top: 0;
-        left: 0;
+        top: -10px;
+        left: 10px;
         height: 18px;
         width: 18px;
         background-color: #eee;
@@ -110,4 +167,4 @@
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
     }
-    </style>
+</style>

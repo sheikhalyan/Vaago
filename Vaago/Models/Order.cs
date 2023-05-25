@@ -18,7 +18,8 @@ namespace Vaago.Models
         {
             this.Order_Details = new HashSet<Order_Details>();
         }
-    
+
+        public bool IsSelectedForDeletion { get; set; }
         public int orderID { get; set; }
         public Nullable<int> CustomerID { get; set; }
         public string orderTime { get; set; }
@@ -29,6 +30,8 @@ namespace Vaago.Models
         public string deliveryCharges { get; set; }
         public string City { get; set; }
         public string notes { get; set; }
+
+
     
         public virtual Account Account { get; set; }
         public virtual ICollection<Order_Details> Order_Details { get; set; }

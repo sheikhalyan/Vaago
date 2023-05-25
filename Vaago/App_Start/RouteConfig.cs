@@ -18,6 +18,13 @@ namespace Vaago
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            /*routes.MapRoute(
+                name: "DeleteSelected",
+                url: "AdminMenu/DeleteSelected",
+                defaults: new { controller = "AdminMenu", action = "DeleteSelected" }
+            );*/
+
         }
     }
 }

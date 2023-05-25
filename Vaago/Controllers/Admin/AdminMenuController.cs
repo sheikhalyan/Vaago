@@ -19,6 +19,7 @@ namespace Vaago.Controllers.Admin
             return View("~/Views/Admin/Menu.cshtml", menuList);
         }
 
+
         // GET: Add Item
         public ActionResult AddItemView()
         {
@@ -40,7 +41,7 @@ namespace Vaago.Controllers.Admin
                         if (item.imgFile.ContentLength <= 1000000)
                         {
                             filename = filename + extension;
-                            item.itemImgpath = "/images/" + filename;
+                            item.itemImgpath = "~/images/" + filename; // I have Put ~ here
                             filename = Path.Combine(Server.MapPath("~/images/"), filename);
                             item.imgFile.SaveAs(filename);
 
@@ -75,38 +76,39 @@ namespace Vaago.Controllers.Admin
         [HttpPost]
         public ActionResult DeleteSelected(List<int> items)
         {
-            if (items != null && items.Count() > 0)
+            if (items != null && items.Count > 0)
             {
                 try
                 {
+                    // Delete the selected items
                     var itemsToDelete = DB.Menus.Where(x => items.Contains(x.itemID)).ToList();
 
                     foreach (var item in itemsToDelete)
                     {
-                        if (!string.IsNullOrEmpty(item.itemImgpath) && System.IO.File.Exists(Server.MapPath(item.itemImgpath)))
+                        // Delete the associated image file if it exists
+                        if (!string.IsNullOrEmpty(item.itemImgpath) || System.IO.File.Exists(Server.MapPath(item.itemImgpath)))
                         {
-                            System.IO.File.Delete(Server.MapPath(item.itemImgpath));
+                            System.IO.File.Delete(Server.MapPath(item.itemImgpath));  //------> Not going here
                         }
+
                         DB.Menus.Remove(item);
                     }
+
                     DB.SaveChanges();
 
-                    return Json(new { success = true });
+                    return Json(new { success = true });  //-------> and here
                 }
                 catch (Exception ex)
                 {
-                    return Json(new { success = false, message = "An error occurred while deleting menu items." });
+                    return Json(new { success = false, message = "An error occurred while deleting menu items." }); //--------> After this it is going here
                 }
             }
-            return RedirectToAction("Index");
-
-            /*return Json(new { success = false, message = "No menu items selected for deletion." });*/
-
+            else
+            {
+                // No items selected, return a message to choose items to delete
+                return Json(new { success = false, message = "Please select items to delete." });
+            }
         }
 
     }
 }
-
-
-
-

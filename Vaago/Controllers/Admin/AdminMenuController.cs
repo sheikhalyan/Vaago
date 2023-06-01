@@ -41,7 +41,7 @@ namespace Vaago.Controllers.Admin
                         if (item.imgFile.ContentLength <= 1000000)
                         {
                             filename = filename + extension;
-                            item.itemImgpath = "~/images/" + filename; // I have Put ~ here
+                            item.itemImgpath = "/images/" + filename; // I have Put ~ here
                             filename = Path.Combine(Server.MapPath("~/images/"), filename);
                             item.imgFile.SaveAs(filename);
 

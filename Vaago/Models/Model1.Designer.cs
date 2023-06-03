@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'D:\Vaago-Alyan2\Vaago\Models\Model1.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\alyan\Desktop\OOAD\OOADProject\Project\Vaago\Vaago\Models\Model1.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

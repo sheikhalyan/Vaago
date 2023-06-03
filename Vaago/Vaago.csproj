@@ -409,9 +409,7 @@
     <Content Include="images\plane1.jpg" />
     <Content Include="images\pulao.jpg" />
     <Content Include="images\shezwan.jpg" />
-    <Content Include="images\singaporianrice.jpg" />
     <Content Include="images\steak.jpg" />
-    <Content Include="images\tikka.jpg" />
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Model1.edmx</DependentUpon>

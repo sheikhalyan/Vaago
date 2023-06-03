@@ -43,7 +43,7 @@ namespace Vaago.Controllers.Admin
                             filename = filename + extension;
                             item.itemImgpath = "/images/" + filename;
                            
-                            filename = Path.Combine(Server.MapPath("/images"), filename);
+                            filename = Path.Combine(Server.MapPath("~/images"), filename);
                             item.imgFile.SaveAs(filename);
 
                             DB.Menus.Add(item);

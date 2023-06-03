@@ -14,7 +14,7 @@ namespace Vaago.Controllers
     {
 
 
-        private readonly string connectionString = "data source=DESKTOP-8IKJ0OT;initial catalog=VaagoProject;integrated security=True;"; // Replace with your actual connection string
+        private readonly string connectionString = "data source=SHEIKH-ALYAN;initial catalog=VaagoProject;integrated security=True;"; // Replace with your actual connection string
 
         [HttpPost]
         public IHttpActionResult PostChef(Chef chef)

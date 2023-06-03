@@ -1,0 +1,64 @@
+﻿@model Vaago.Models.Chef
+
+@*Your view code here*@
+
+
+@{
+    ViewBag.Title = "Create";
+
+}
+
+@*Start Reservation section*@
+<section id="mu-reservation">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="mu-reservation-area">
+                    <div class="mu-title">
+                        <span class="mu-subtitle">Apply For</span>
+                        <h2>Chef</h2>
+                        <i class="fa fa-spoon"></i>
+                        <span class="mu-title-bar"></span>
+                    </div>
+                    <div class="mu-reservation-content">
+                        <p>Send You Details Through ths form</p>
+                        @using (Html.BeginForm("Create", "Chefapply", FormMethod.Post))
+                        {
+                            <form class="mu-reservation-form">
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(x => x.Chef_Name, new { @required = "true", @class = "form-control input", @placeholder = "Enter your full name" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(x => x.Chef_Email, new { @required = "true", @type = "email", @class = "form-control input", @placeholder = "jhon.Doe@someting.com" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            @Html.TextBoxFor(x => x.Chef_Contact, new { @required = "true", @type = "text", @class = "form-control input", @placeholder = "03330XXXXXXX", @pattern = "{03}[0-9][0-9]\\d{7}" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(x => x.Msg_Body, new { @required = "true", @cols = "40", rows = "10", placeholder = "Your Experience", @class = "form-control input" })
+                                           
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="btn-control">
+                                        <button type="submit" class="reservation-btn" style="margin-top:50px">Send</button>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@*End Reservation section*@

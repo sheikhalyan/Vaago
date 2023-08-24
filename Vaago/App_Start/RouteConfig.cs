@@ -26,13 +26,21 @@ namespace Vaago
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-          
+        //    routes.MapRoute(
+        //    name: "AdminCustomers",
+        //    url: "AdminCustomers",
+        //    defaults: new { controller = "AdminCustomers", action = "Index" }
+        //);
+
+
 
             /*routes.MapRoute(
                 name: "DeleteSelected",
                 url: "AdminMenu/DeleteSelected",
                 defaults: new { controller = "AdminMenu", action = "DeleteSelected" }
             );*/
+
+
 
         }
     }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Vaago.Models;
 
@@ -9,47 +8,34 @@ namespace Vaago.Controllers
 {
     public class CartController : Controller
     {
-        VaagoProjectEntities1 DB = new VaagoProjectEntities1();
+        private readonly ICartRetrievalStrategy _cartRetrievalStrategy;
+        private readonly VaagoProjectEntities1 _context;
+
+        public CartController(ICartRetrievalStrategy cartRetrievalStrategy, VaagoProjectEntities1 context)
+        {
+            _cartRetrievalStrategy = cartRetrievalStrategy;
+            _context = context;
+        }
+
         // GET: Cart
         public ActionResult Index()
         {
             var cur = Session["userID"];
             var num = Session["non-userID"];
+            int accountId = 0;
 
             if (cur != null)
             {
-                var accID = ((Vaago.Models.Account)cur).account_ID;
-
-                var cartNitem = from ca in DB.Carts
-                                join m in DB.Menus on ca.itemID equals m.itemID
-                                where ca.account_ID == accID
-                                select new CartItem
-                                {
-                                    menuItem = m,
-                                    cartItem = ca
-                                };
-
-                return View(cartNitem);
-
+                accountId = ((Vaago.Models.Account)cur).account_ID;
             }
             else if (num != null)
             {
-                int innum = Convert.ToInt32(num);
-                var cartNitem = from ca in DB.Carts
-                                    join m in DB.Menus on ca.itemID equals m.itemID
-                                    where ca.account_ID == innum
-                                    select new CartItem
-                                        {
-                                            menuItem = m,
-                                            cartItem = ca
-                                        };
+                accountId = Convert.ToInt32(num);
+            }
 
-                    return View(cartNitem);
-            }
-            else
-            {
-                return View();
-            }
+            IEnumerable<CartItem> cartNitem = _cartRetrievalStrategy.GetCartItems(accountId); 
+
+            return View(cartNitem);
         }
 
         [HttpPost]
@@ -69,16 +55,15 @@ namespace Vaago.Controllers
                 finalVal = innum;
             }
 
-            List<Cart> obj = DB.Carts.Where(x => x.account_ID == finalVal).ToList();
+            List<Cart> obj = _context.Carts.Where(x => x.account_ID == finalVal).ToList();
             foreach (var item in obj)
             {
                 item.totalAmount = Convert.ToInt32(totalBill);
 
             }
-            DB.SaveChanges();
+            _context.SaveChanges();
 
-            return RedirectToAction("Index","Checkout");
+            return RedirectToAction("Index", "Checkout");
         }
     }
-
 }

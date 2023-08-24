@@ -80,6 +80,18 @@
 </section>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        $(document).ready(function () {
+            var message = '@Html.Raw(TempData["SuccessMessage"])';
+            alert(message);
+        });
+    </script>
+}
+
 <script>
    $(document).ready(function () {
     // AJAX DELETE REQUEST

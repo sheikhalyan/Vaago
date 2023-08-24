@@ -21,7 +21,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <Use64BitIISExpress />
+    <Use64BitIISExpress>false</Use64BitIISExpress>
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -69,6 +69,9 @@
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
@@ -115,6 +118,15 @@
     <Reference Include="System.Net.Http.WebRequest">
     </Reference>
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.1\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.1\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mvc5, Version=1.4.0.0, Culture=neutral, PublicKeyToken=43da31bc42a85347, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.Mvc5.1.4.0\lib\net45\Unity.Mvc5.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease, Version=1.6.5135.21930, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
     </Reference>
@@ -127,6 +139,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AboutUsController.cs" />
     <Compile Include="Controllers\Admin\AdminChefController.cs" />
@@ -135,8 +148,13 @@
     <Compile Include="Controllers\Admin\AdminOrdersController.cs" />
     <Compile Include="Controllers\Admin\AdminReservationController.cs" />
     <Compile Include="Controllers\Admin\ChefsController.cs" />
+    <Compile Include="Controllers\Admin\Factory-Pattern%28Admin-Customer-Contoller%29\CustomerDeletionService.cs" />
+    <Compile Include="Controllers\Admin\Factory-Pattern%28Admin-Customer-Contoller%29\CustomerDeletionServiceFactory.cs" />
+    <Compile Include="Controllers\Admin\Factory-Pattern%28Admin-Customer-Contoller%29\ICustomerDeletionService.cs" />
     <Compile Include="Controllers\Admin\DashboardController.cs" />
     <Compile Include="Controllers\Admin\AdminMenuController.cs" />
+    <Compile Include="Controllers\Admin\Observer-Pattern%28Admin-Order-Controller%29\IObserver.cs" />
+    <Compile Include="Controllers\Admin\Observer-Pattern%28Admin-Order-Controller%29\OrderSubject.cs" />
     <Compile Include="Controllers\Admin\SettingController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\CartController.cs" />
@@ -160,15 +178,21 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CartItem.cs" />
+    <Compile Include="Models\Repository-Pattern%28Menu-Controller%29\CartRepository.cs" />
+    <Compile Include="Models\Strategy-Pattern%28Cart-Controller%29\CartRetrievalStrategy.cs" />
     <Compile Include="Models\CheckoutModel.cs" />
     <Compile Include="Models\Chef.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ChefViewModel.cs" />
+    <Compile Include="Models\Strategy-Pattern%28Cart-Controller%29\ICartRetrievalStrategy.cs" />
+    <Compile Include="Models\Repository-Pattern%28Menu-Controller%29\IMenuRepository.cs" />
+    <Compile Include="Models\Command-Pattern%28Checkout-Controller%29\IOrderCommand.cs" />
     <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Menu.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Repository-Pattern%28Menu-Controller%29\MenuRepository.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -190,6 +214,7 @@
     <Compile Include="Models\Order_Details.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Command-Pattern%28Checkout-Controller%29\PlaceOrderCommand.cs" />
     <Compile Include="Models\Reservation.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -396,19 +421,7 @@
     <Content Include="Content\AdminAssets\fonts\poppins\Poppins-SemiBoldItalic.ttf" />
     <Content Include="Content\AdminAssets\fonts\poppins\Poppins-Thin.ttf" />
     <Content Include="Content\AdminAssets\fonts\poppins\Poppins-ThinItalic.ttf" />
-    <Content Include="images\1.png" />
-    <Content Include="images\7up.jpg" />
     <Content Include="images\alfredo.jpg" />
-    <Content Include="images\american-omelet.jpg" />
-    <Content Include="images\bihari.jpg" />
-    <Content Include="images\chilliDry.jpg" />
-    <Content Include="images\kashmiri.jpg" />
-    <Content Include="images\mirinda.jpg" />
-    <Content Include="images\muttonkarahi.jpg" />
-    <Content Include="images\pepsi.jpg" />
-    <Content Include="images\plane1.jpg" />
-    <Content Include="images\pulao.jpg" />
-    <Content Include="images\shezwan.jpg" />
     <Content Include="images\steak.jpg" />
     <Content Include="Models\Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -483,6 +496,7 @@
     <Content Include="Views\Chefapply\Index.cshtml" />
     <Content Include="Views\Chefapply\Create.cshtml" />
     <Content Include="Views\Chefapply\Detail.cshtml" />
+    <Content Include="Views\AdminCustomers\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -533,7 +547,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53701</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:53521/</IISUrl>
+          <IISUrl>http://localhost:5000/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

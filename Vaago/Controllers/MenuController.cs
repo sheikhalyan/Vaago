@@ -8,13 +8,19 @@ namespace Vaago.Controllers
 {
     public class MenuController : Controller
     {
-        VaagoProjectEntities1 DB = new VaagoProjectEntities1();
+        private readonly IMenuRepository _menuRepository;
+        private readonly ICartRepository _cartRepository;
+
+        public MenuController(IMenuRepository menuRepository, ICartRepository cartRepository)
+        {
+            _menuRepository = menuRepository;
+            _cartRepository = cartRepository;
+        }
+
         // GET: Menu
         public ActionResult Index()
         {
-
-            //Querying with LINQ to Entities 
-            List<Menu> items = DB.Menus.ToList();
+            List<Menu> items = _menuRepository.GetAllMenus();
             return View(items);
         }
 
@@ -30,16 +36,15 @@ namespace Vaago.Controllers
             if (cur != null)
             {
                 itemSelected.account_ID = ((Vaago.Models.Account)cur).account_ID;
-
             }
             else
             {
                 if (Session["non-userID"] == null)
                 {
-                Random r = new Random();
-                int num = r.Next();
-                Session["non-userID"] = num;
-                itemSelected.account_ID = num;
+                    Random r = new Random();
+                    int num = r.Next();
+                    Session["non-userID"] = num;
+                    itemSelected.account_ID = num;
                 }
                 else
                 {
@@ -48,10 +53,8 @@ namespace Vaago.Controllers
                 }
             }
 
-            DB.Carts.Add(itemSelected);
-            DB.SaveChanges();
+            _cartRepository.AddToCart(itemSelected);
             return RedirectToActionPermanent("Index", "Menu");
         }
-
     }
 }

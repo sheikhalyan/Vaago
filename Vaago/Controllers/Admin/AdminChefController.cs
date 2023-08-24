@@ -41,47 +41,6 @@ namespace Vaago.Controllers.Admin
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // GET: Chefs/Details/5
         public ActionResult Details(int id)
         {

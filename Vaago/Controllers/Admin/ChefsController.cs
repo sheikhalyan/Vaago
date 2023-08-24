@@ -28,22 +28,6 @@ namespace Vaago.Controllers.Admin
             }
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         // GET: api/chefs/5
         public IHttpActionResult GetChef(int id)
         {

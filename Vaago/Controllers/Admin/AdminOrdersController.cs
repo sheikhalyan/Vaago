@@ -6,17 +6,27 @@ using System.Web.Mvc;
 using Vaago.Models;
 
 namespace Vaago.Controllers.Admin
-{
-    public class AdminOrdersController : Controller
+{//OBSERVER CLASS ITSELF
+ //It is interested in receiving notifications about changes in order statuses.
+    public class AdminOrdersController : Controller, IObserver
     {
-        VaagoProjectEntities1 DB = new VaagoProjectEntities1();
+        private VaagoProjectEntities1 DB = new VaagoProjectEntities1();
+        private OrderSubject _orderSubject = new OrderSubject();
+
+        public AdminOrdersController()
+        {
+            _orderSubject.Attach(this);//means that the controller is now registered to receive notifications from the OrderSubject
+        }
+
         // GET: AdminOrders
         public ActionResult Index()
         {
             List<Order> ordersList = DB.Orders.ToList();
 
+            // Check if there's a success message in TempData
+            ViewBag.SuccessMessage = TempData["SuccessMessage"];
+
             return View("~/Views/Admin/AdminOrders.cshtml", ordersList);
-            //}
         }
 
         public ActionResult ViewOrder(int orderID)
@@ -42,14 +52,23 @@ namespace Vaago.Controllers.Admin
             var cur = Session["Admin"];
             if (ModelState.IsValid)
             {
-                var obj = DB.Orders.Where(x => x.orderID == orderID).First<Order>();
+                var obj = DB.Orders.Where(x => x.orderID == orderID).FirstOrDefault();
+                if (obj != null)
+                {
+                    obj.orderStatus = orderStatus;
+                    DB.SaveChanges();
 
-                obj.orderStatus = orderStatus ;
-                DB.SaveChanges();
+                    // Notify observers about the status update
+                    _orderSubject.Notify(obj, orderStatus);
+
+                    // Set the success message in TempData
+                    TempData["SuccessMessage"] = $"Order {orderID} status changed to {orderStatus}";
+                }
             }
 
             return RedirectToAction("Index", "AdminOrders");
         }
+
         [HttpPost]
         public ActionResult DeleteOrder(int[] orderID)
         {
@@ -72,32 +91,13 @@ namespace Vaago.Controllers.Admin
                 return Json(new { success = false, message = "An error occurred while deleting menu items." });
             }
         }
-        /*[HttpPost]
-        public ActionResult DeleteCustomer(int[] customerID)
+
+        // Implement the IObserver method
+        public void Update(Order order, string status)
         {
-            try
-            {
-                var customers = DB.Accounts.Where(c => customerID.Contains(c.account_ID) && c.account_type == 2).ToList();
-
-                if (customers.Count > 0)
-                {
-                    // Delete the customers
-                    DB.Accounts.RemoveRange(customers);
-                    DB.SaveChanges();
-                    return Json(new { success = true });
-                }
-                else
-                {
-                    return Json(new { success = false, message = "Customers not found." });
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(new { success = false, message = "An error occurred while deleting the customers." });
-            }
-        }*/
-
-
-
+            // Logic to handle the notification when an order status is updated
+           
+            TempData["SuccessMessage"] = $"Order {order.orderID} status changed to {status}";
+        }
     }
 }

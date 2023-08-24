@@ -89,7 +89,7 @@ namespace Vaago.Controllers.Admin
                         // Delete the associated image file if it exists
                         if (!string.IsNullOrEmpty(item.itemImgpath) || System.IO.File.Exists(Server.MapPath(item.itemImgpath)))
                         {
-                            System.IO.File.Delete(Server.MapPath(item.itemImgpath));  //------> Not going here
+                            System.IO.File.Delete(Server.MapPath(item.itemImgpath));  
                         }
 
                         DB.Menus.Remove(item);
@@ -97,11 +97,11 @@ namespace Vaago.Controllers.Admin
 
                     DB.SaveChanges();
 
-                    return Json(new { success = true });  //-------> and here
+                    return Json(new { success = true });  
                 }
                 catch (Exception ex)
                 {
-                    return Json(new { success = false, message = "An error occurred while deleting menu items." }); //--------> After this it is going here
+                    return Json(new { success = false, message = "An error occurred while deleting menu items." }); 
                 }
             }
             else

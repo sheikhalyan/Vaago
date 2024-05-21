@@ -12,12 +12,12 @@ namespace Vaago.Controllers.Admin
     public class AdminChefController : Controller
     {
         VaagoProjectEntities1 DB = new VaagoProjectEntities1();
-        // GET: AdminChef
+        // GET: AdminChef //posting
         public ActionResult Index()
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:53521/api/");
+                client.BaseAddress = new Uri("http://localhost:5000/api/");
 
                 // Send HTTP request to the API to retrieve all chefs
                 var responseTask = client.GetAsync("chefs");
